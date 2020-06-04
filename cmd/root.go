@@ -28,7 +28,7 @@ func Execute() {
 }
 
 func rootRun(cmd *cobra.Command, args []string) {
-	jobs := make([]*downloader.Job, 0)
+	jobs := make([]*downloader.Job, 0, 10)
 
 	option := *rootOption
 
