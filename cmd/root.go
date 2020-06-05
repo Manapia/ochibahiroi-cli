@@ -6,6 +6,9 @@ import (
 	"log"
 	"ochibahiroi-cli/downloader"
 	"os"
+	"os/exec"
+	"path/filepath"
+	"runtime"
 )
 
 type rootOption struct {
@@ -19,6 +22,7 @@ type rootOption struct {
 	resetNumber   bool
 	outputPath    string
 	makeOutputDir bool
+	openOutputDir bool
 }
 
 var rootCmd *cobra.Command
@@ -41,10 +45,12 @@ func init() {
 	rootCmd.Flags().BoolVarP(&rootOptions.resetNumber, "reset-number", "r", false, "Use numbers that start with 1 instead of the original filename.")
 	rootCmd.Flags().StringVarP(&rootOptions.outputPath, "output-path", "o", "./", "The output destination of the downloaded files.")
 	rootCmd.Flags().BoolVar(&rootOptions.makeOutputDir, "make-output", false, "If the destination folder does not exist, it will be created.")
+	rootCmd.Flags().BoolVar(&rootOptions.openOutputDir, "open", false, "After the download is complete, open the destination folder.")
 }
 
 func Execute() {
 	err := rootCmd.Execute()
+
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -86,10 +92,36 @@ func rootRun(cmd *cobra.Command, args []string) {
 	}
 
 	downloader.Run(jobs, option)
+
+	if rootOptions.openOutputDir {
+		showOutputDirectory()
+	}
 }
 
 func showDryRun(jobs []*downloader.Job) {
 	for _, job := range jobs {
 		fmt.Printf("%s => %s\n", job.Url, job.SavePath)
+	}
+}
+
+func showOutputDirectory() {
+	var err error
+
+	abs, err := filepath.Abs(rootOptions.outputPath)
+
+	if err == nil {
+		switch runtime.GOOS {
+		case "darwin":
+			err = exec.Command("open", abs).Start()
+		case "linux":
+			err = exec.Command("xdg-open", abs).Start()
+		case "windows":
+			cmd := exec.Command(`explorer`, `/select,`, abs)
+			err = cmd.Run()
+		}
+	}
+
+	if err != nil {
+		log.Fatal(err)
 	}
 }
