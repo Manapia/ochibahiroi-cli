@@ -14,8 +14,8 @@ import (
 )
 
 const (
-	packageName = "your_package"
-	binFileName = "app_name"
+	packageName = "ochibahiroi-cli"
+	binFileName = "ochibahiroi"
 )
 
 // Default target to run when none is specified
