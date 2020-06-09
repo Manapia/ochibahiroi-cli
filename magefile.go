@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	packageName = "ochibahiroi-cli"
+	packageName = "github.com/Manapia/ochibahiroi-cli"
 	binFileName = "ochibahiroi"
 )
 

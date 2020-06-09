@@ -2,9 +2,9 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/Manapia/ochibahiroi-cli/downloader"
 	"github.com/spf13/cobra"
 	"log"
-	"ochibahiroi-cli/downloader"
 	"os"
 	"os/exec"
 	"path/filepath"

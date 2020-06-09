@@ -1,4 +1,4 @@
-module ochibahiroi-cli
+module github.com/Manapia/ochibahiroi-cli
 
 go 1.14
 

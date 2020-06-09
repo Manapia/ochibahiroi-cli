@@ -1,6 +1,6 @@
 package main
 
-import "ochibahiroi-cli/cmd"
+import "github.com/Manapia/ochibahiroi-cli/cmd"
 
 func main() {
 	cmd.Execute()
