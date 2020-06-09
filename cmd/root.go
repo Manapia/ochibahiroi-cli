@@ -35,6 +35,8 @@ func init() {
 		Run:   rootRun,
 	}
 
+	rootCmd.Version = "1.0.0"
+
 	rootCmd.Flags().IntVarP(&rootOptions.parallels, "parallels", "m", 2, "Number of concurrent downloads.")
 	rootCmd.Flags().BoolVarP(&rootOptions.showProgress, "progress", "p", true, "Show progress bars.")
 	rootCmd.Flags().BoolVarP(&rootOptions.dryRun, "dry-run", "d", false, "Show a list of files to download.")
