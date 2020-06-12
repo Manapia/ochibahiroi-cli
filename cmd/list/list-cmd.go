@@ -8,8 +8,8 @@ func init() {
 	Cmd = &cobra.Command{
 		Use:   "list",
 		Short: "Controls custom download list",
-		Run: func(cmd *cobra.Command, args []string) {
-
-		},
 	}
+
+	initInitCmd()
+	Cmd.AddCommand(initCmd)
 }

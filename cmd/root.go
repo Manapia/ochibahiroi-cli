@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/Manapia/ochibahiroi-cli/cmd/list"
 	"github.com/Manapia/ochibahiroi-cli/downloader"
 	"github.com/spf13/cobra"
 	"log"
@@ -48,6 +49,8 @@ func init() {
 	rootCmd.Flags().StringVarP(&rootOptions.outputPath, "output-path", "o", "./", "The output destination of the downloaded files.")
 	rootCmd.Flags().BoolVar(&rootOptions.makeOutputDir, "make-output", false, "If the destination folder does not exist, it will be created.")
 	rootCmd.Flags().BoolVar(&rootOptions.openOutputDir, "open", false, "After the download is complete, open the destination folder.")
+
+	rootCmd.AddCommand(list.Cmd)
 }
 
 func Execute() {
