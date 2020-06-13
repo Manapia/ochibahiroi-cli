@@ -13,8 +13,10 @@ func init() {
 	initInitCmd()
 	initAppendCmd()
 	initListRemoveCmd()
+	initRunCmd()
 
 	Cmd.AddCommand(initCmd)
 	Cmd.AddCommand(appendCmd)
 	Cmd.AddCommand(removeCmd)
+	Cmd.AddCommand(runCmd)
 }

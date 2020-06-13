@@ -28,6 +28,10 @@ type JobListBuilder struct {
 	useIncrementalCount bool
 }
 
+func (j *Job) ToDisplayString() string {
+	return fmt.Sprintf("\"%s\" => \"%s\"", j.Url, j.SavePath)
+}
+
 func (b *JobListBuilder) SetUrl(url string) {
 	b.url = url
 }

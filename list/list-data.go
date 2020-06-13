@@ -3,6 +3,7 @@ package list
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -38,6 +39,32 @@ func (dld *DownloadListData) ToJson() ([]byte, error) {
 	}
 
 	return out.Bytes(), nil
+}
+
+func (dld *DownloadListData) Validation() (errorList []error) {
+	errorList = make([]error, 0)
+
+	idMap := make(map[int]bool, len(dld.List))
+	outputMap := make(map[string]int, len(dld.List))
+
+	for _, item := range dld.List {
+		_, idExists := idMap[item.ID]
+		if idExists {
+			errorList = append(errorList, errors.New("duplicate id: 4"))
+		} else {
+			idMap[item.ID] = false
+		}
+
+		duplicateID, outputExists := outputMap[item.Output]
+		if outputExists {
+			errorList = append(errorList, fmt.Errorf("output \"%s\" with id: %d is duplicated with id: %d",
+				item.Output, item.ID, duplicateID))
+		} else {
+			outputMap[item.Output] = item.ID
+		}
+	}
+
+	return
 }
 
 func (dld *DownloadListData) Clear() {
