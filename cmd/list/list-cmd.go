@@ -11,5 +11,8 @@ func init() {
 	}
 
 	initInitCmd()
+	initAppendCmd()
+
 	Cmd.AddCommand(initCmd)
+	Cmd.AddCommand(appendCmd)
 }
