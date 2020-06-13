@@ -96,3 +96,7 @@ func (dlf *DownloadListFile) LoadFile() error {
 
 	return nil
 }
+
+func (dli *DownloadListItem) Format() string {
+	return fmt.Sprintf("[%d] \"%s\" => \"%s\"", dli.ID, dli.Input, dli.Output)
+}

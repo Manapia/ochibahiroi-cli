@@ -74,7 +74,7 @@ func removeCmdRun(cmd *cobra.Command, args []string) {
 
 	if removeCmdConfig.DryRun {
 		for _, removeItem := range removeItems {
-			fmt.Printf("[%d] \"%s\" => \"%s\"\n", removeItem.ID, removeItem.Input, removeItem.Output)
+			fmt.Println(removeItem.Format())
 		}
 		return
 	}

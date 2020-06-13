@@ -61,7 +61,7 @@ func Execute() {
 	}
 }
 
-func rootRun(cmd *cobra.Command, args []string) {
+func rootRun(_ *cobra.Command, _ []string) {
 	builder := downloader.JobListBuilder{}
 	builder.SetUrl(rootOptions.url)
 	builder.SetSavePath(rootOptions.outputPath)
@@ -99,7 +99,7 @@ func rootRun(cmd *cobra.Command, args []string) {
 	downloader.Run(jobs, option)
 
 	if rootOptions.openOutputDir {
-		showOutputDirectory()
+		openOutputDirectory(rootOptions.outputPath)
 	}
 }
 
@@ -109,10 +109,10 @@ func showDryRun(jobs []*downloader.Job) {
 	}
 }
 
-func showOutputDirectory() {
+func openOutputDirectory(filePath string) {
 	var err error
 
-	abs, err := filepath.Abs(rootOptions.outputPath)
+	abs, err := filepath.Abs(filePath)
 
 	if err == nil {
 		switch runtime.GOOS {
