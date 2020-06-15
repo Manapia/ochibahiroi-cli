@@ -24,6 +24,7 @@ type rootOption struct {
 	outputPath    string
 	makeOutputDir bool
 	openOutputDir bool
+	headerFile    string
 }
 
 var rootCmd *cobra.Command
@@ -49,6 +50,7 @@ func init() {
 	rootCmd.Flags().StringVarP(&rootOptions.outputPath, "output-path", "o", "./", "The output destination of the downloaded files.")
 	rootCmd.Flags().BoolVar(&rootOptions.makeOutputDir, "make-output", false, "If the destination folder does not exist, it will be created.")
 	rootCmd.Flags().BoolVar(&rootOptions.openOutputDir, "open", false, "After the download is complete, open the destination folder.")
+	rootCmd.Flags().StringVar(&rootOptions.headerFile, "header-file", "", "Read the download request header from the file.")
 
 	rootCmd.AddCommand(list.Cmd)
 }
@@ -96,6 +98,14 @@ func rootRun(_ *cobra.Command, _ []string) {
 		ShowProgress: rootOptions.showProgress,
 	}
 
+	if rootOptions.headerFile != "" {
+		headerData, err := loadHeaderFile()
+		if err != nil {
+			log.Fatalf("Failed to process header file.\n%v", err)
+		}
+		option.Header = headerData
+	}
+
 	downloader.Run(jobs, option)
 
 	if rootOptions.openOutputDir {
@@ -107,6 +117,29 @@ func showDryRun(jobs []*downloader.Job) {
 	for _, job := range jobs {
 		fmt.Printf("%s => %s\n", job.Url, job.SavePath)
 	}
+}
+
+func loadHeaderFile() (map[string]string, error) {
+	_, err := os.Stat(rootOptions.headerFile)
+	if err != nil {
+		return nil, fmt.Errorf("header file not found.\n%v", err)
+	}
+
+	f, err := os.Open(rootOptions.headerFile)
+	if err != nil {
+		return nil, fmt.Errorf("failed to open the header file.\n%v", err)
+	}
+	defer func() {
+		if err := f.Close(); err != nil {
+			log.Printf("failed to close the header file.\n%v", err)
+		}
+	}()
+
+	headerData, err := downloader.ParseHeaderString(f)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse the file\n%v", err)
+	}
+	return headerData, nil
 }
 
 func openOutputDirectory(filePath string) {

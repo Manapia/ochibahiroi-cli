@@ -16,6 +16,7 @@ type runCmdConfigs struct {
 	parallels     int
 	showProgress  bool
 	makeOutputDir bool
+	headerFile    string
 }
 
 var runCmd *cobra.Command
@@ -34,6 +35,7 @@ func initRunCmd() {
 	runCmd.Flags().IntVarP(&runCmdConfig.parallels, "parallels", "m", 2, "Number of concurrent downloads.")
 	runCmd.Flags().BoolVarP(&runCmdConfig.showProgress, "progress", "p", true, "Show progress bars.")
 	runCmd.Flags().BoolVar(&runCmdConfig.makeOutputDir, "make-output", false, "If the destination folder does not exist, it will be created.")
+	runCmd.Flags().StringVar(&runCmdConfig.headerFile, "header-file", "", "Read the download request header from the file.")
 }
 
 func runCmdRun(_ *cobra.Command, args []string) {
@@ -45,7 +47,7 @@ func runCmdRun(_ *cobra.Command, args []string) {
 		log.Fatalln("The specified file could not be found.")
 	}
 	if err := listFile.LoadFile(); err != nil {
-		log.Fatalf("Failed to load file.\n%v", err)
+		log.Fatalf("Failed to load list file.\n%v", err)
 	}
 	if errList := listFile.Validation(); len(errList) != 0 {
 		mes := fmt.Sprintf("%d issues found in download list.\n", len(errList))
@@ -94,5 +96,36 @@ func runCmdRun(_ *cobra.Command, args []string) {
 		ShowProgress: runCmdConfig.showProgress,
 	}
 
+	if runCmdConfig.headerFile != "" {
+		headerData, err := loadHeaderFile()
+		if err != nil {
+			log.Fatalf("Failed to process header file.\n%v", err)
+		}
+		option.Header = headerData
+	}
+
 	downloader.Run(jobList, option)
+}
+
+func loadHeaderFile() (map[string]string, error) {
+	_, err := os.Stat(runCmdConfig.headerFile)
+	if err != nil {
+		return nil, fmt.Errorf("header file not found.\n%v", err)
+	}
+
+	f, err := os.Open(runCmdConfig.headerFile)
+	if err != nil {
+		return nil, fmt.Errorf("failed to open the header file.\n%v", err)
+	}
+	defer func() {
+		if err := f.Close(); err != nil {
+			log.Printf("failed to close the header file.\n%v", err)
+		}
+	}()
+
+	headerData, err := downloader.ParseHeaderString(f)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse the file\n%v", err)
+	}
+	return headerData, nil
 }

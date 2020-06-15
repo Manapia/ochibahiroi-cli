@@ -23,6 +23,13 @@ func Run(jobs []*Job, option DownloadOption) {
 
 	for _, job := range jobs {
 		req, _ := grab.NewRequest(job.SavePath, job.Url)
+
+		if option.Header != nil {
+			for key, value := range option.Header {
+				req.HTTPRequest.Header.Set(key, value)
+			}
+		}
+
 		requests = append(requests, req)
 		go download(ch, &wg, progressBar, client, req, option)
 	}
