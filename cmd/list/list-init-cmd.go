@@ -16,7 +16,7 @@ var initCmd *cobra.Command
 func initInitCmd() {
 	initCmd = &cobra.Command{
 		Use:   "init",
-		Short: "Create an initialized download list file",
+		Short: "Create an initialized download list file.",
 		Args:  cobra.ExactArgs(1),
 		Run:   listInitCmdRun,
 	}
@@ -48,7 +48,7 @@ func listInitCmdRun(_ *cobra.Command, args []string) {
 
 	dstPath, err := filepath.Abs(specifiedFileName)
 	if err != nil {
-		log.Fatalf("Cannot get the path of the written file.")
+		log.Fatalln("Cannot get the path of the written file.")
 	}
 	fmt.Printf("Saved to file %s\n", dstPath)
 }

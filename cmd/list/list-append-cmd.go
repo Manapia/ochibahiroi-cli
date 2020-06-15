@@ -44,7 +44,7 @@ func initAppendCmdRun(_ *cobra.Command, args []string) {
 		}
 	}
 	if startID > startID+len(fileData.List) {
-		log.Fatalf("id overflow")
+		log.Fatalf("ID overflow!")
 	}
 	currentID := startID + 1
 

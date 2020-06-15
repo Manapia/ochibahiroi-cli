@@ -87,7 +87,7 @@ func runCmdRun(_ *cobra.Command, args []string) {
 				}
 			}
 		} else if !outputPathStat.IsDir() {
-			log.Fatalf("output path %s is not directory", job.SavePath)
+			log.Fatalf("Output path %s is not directory", job.SavePath)
 		}
 	}
 
@@ -119,7 +119,7 @@ func loadHeaderFile() (map[string]string, error) {
 	}
 	defer func() {
 		if err := f.Close(); err != nil {
-			log.Printf("failed to close the header file.\n%v", err)
+			log.Printf("Failed to close the header file.\n%v", err)
 		}
 	}()
 
