@@ -9,22 +9,16 @@ import (
 )
 
 type Job struct {
-	Url string
-
+	Url      string
 	SavePath string
 }
 
 type JobListBuilder struct {
-	url string
-
-	savePath string
-
-	startNumber int
-
-	endNumber int
-
-	step int
-
+	url                 string
+	savePath            string
+	startNumber         int
+	endNumber           int
+	step                int
 	useIncrementalCount bool
 }
 

@@ -8,11 +8,9 @@ import (
 )
 
 type DownloadOption struct {
-	Parallels int
-
+	Parallels    int
 	ShowProgress bool
-
-	Header map[string]string
+	Header       map[string]string
 }
 
 func ParseHeaderString(source io.Reader) (map[string]string, error) {
