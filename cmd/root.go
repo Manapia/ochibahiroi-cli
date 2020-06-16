@@ -37,7 +37,7 @@ func init() {
 		Run:   rootRun,
 	}
 
-	rootCmd.Version = "1.1.1"
+	rootCmd.Version = "1.1.2"
 
 	rootCmd.Flags().IntVarP(&rootOptions.parallels, "parallels", "m", 2, "Number of concurrent downloads.")
 	rootCmd.Flags().BoolVarP(&rootOptions.showProgress, "progress", "p", true, "Show progress bars.")
