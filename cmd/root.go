@@ -77,6 +77,10 @@ func rootRun(_ *cobra.Command, _ []string) {
 		log.Fatalln(err)
 	}
 
+	for _, job := range jobs {
+		job.SanitizeSavePath()
+	}
+
 	if rootOptions.dryRun {
 		showDryRun(jobs)
 		return
