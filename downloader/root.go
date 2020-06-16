@@ -12,8 +12,6 @@ import (
 func Run(jobs []*Job, option DownloadOption) {
 	client := grab.NewClient()
 
-	requests := make([]*grab.Request, 0, len(jobs))
-
 	progressBar := mpb.New(mpb.WithWidth(64))
 
 	ch := make(chan struct{}, option.Parallels)
@@ -30,7 +28,6 @@ func Run(jobs []*Job, option DownloadOption) {
 			}
 		}
 
-		requests = append(requests, req)
 		go download(ch, &wg, progressBar, client, req, option)
 	}
 
