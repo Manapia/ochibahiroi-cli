@@ -22,6 +22,10 @@ func ParseHeaderString(source io.Reader) (map[string]string, error) {
 	for scanner.Scan() {
 		row := scanner.Text()
 
+		if len(row) == 0 {
+			continue
+		}
+
 		var parsed []string
 		if row[0] == ':' {
 			continue
