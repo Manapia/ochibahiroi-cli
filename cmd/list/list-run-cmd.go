@@ -67,7 +67,6 @@ func runCmdRun(_ *cobra.Command, args []string) {
 			Url:      item.Input,
 			SavePath: item.Output,
 		}
-		newJob.SanitizeSavePath()
 		jobList = append(jobList, newJob)
 	}
 

@@ -2,7 +2,6 @@ package downloader
 
 import (
 	"fmt"
-	"github.com/kennygrant/sanitize"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -25,10 +24,6 @@ type JobListBuilder struct {
 
 func (j *Job) ToDisplayString() string {
 	return fmt.Sprintf("\"%s\" => \"%s\"", j.Url, j.SavePath)
-}
-
-func (j *Job) SanitizeSavePath() {
-	j.SavePath = sanitize.Name(j.SavePath)
 }
 
 func (b *JobListBuilder) SetUrl(url string) {
