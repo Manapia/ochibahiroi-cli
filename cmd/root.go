@@ -7,9 +7,6 @@ import (
 	"github.com/spf13/cobra"
 	"log"
 	"os"
-	"os/exec"
-	"path/filepath"
-	"runtime"
 )
 
 type rootOption struct {
@@ -23,7 +20,6 @@ type rootOption struct {
 	resetNumber   bool
 	outputPath    string
 	makeOutputDir bool
-	openOutputDir bool
 	headerFile    string
 }
 
@@ -49,7 +45,6 @@ func init() {
 	rootCmd.Flags().BoolVarP(&rootOptions.resetNumber, "reset-number", "r", false, "Use numbers that start with 1 instead of the original filename.")
 	rootCmd.Flags().StringVarP(&rootOptions.outputPath, "output-path", "o", "./", "The output destination of the downloaded files.")
 	rootCmd.Flags().BoolVar(&rootOptions.makeOutputDir, "make-output", false, "If the destination folder does not exist, it will be created.")
-	rootCmd.Flags().BoolVar(&rootOptions.openOutputDir, "open", false, "After the download is complete, open the destination folder.")
 	rootCmd.Flags().StringVar(&rootOptions.headerFile, "header-file", "", "Read the download request header from the file.")
 
 	rootCmd.AddCommand(list.Cmd)
@@ -107,10 +102,6 @@ func rootRun(_ *cobra.Command, _ []string) {
 	}
 
 	downloader.Run(jobs, option)
-
-	if rootOptions.openOutputDir {
-		openOutputDirectory(rootOptions.outputPath)
-	}
 }
 
 func showDryRun(jobs []*downloader.Job) {
@@ -140,26 +131,4 @@ func loadHeaderFile() (map[string]string, error) {
 		return nil, fmt.Errorf("failed to parse the file\n%v", err)
 	}
 	return headerData, nil
-}
-
-func openOutputDirectory(filePath string) {
-	var err error
-
-	abs, err := filepath.Abs(filePath)
-
-	if err == nil {
-		switch runtime.GOOS {
-		case "darwin":
-			err = exec.Command("open", abs).Start()
-		case "linux":
-			err = exec.Command("xdg-open", abs).Start()
-		case "windows":
-			cmd := exec.Command(`explorer`, `/select,`, abs)
-			err = cmd.Run()
-		}
-	}
-
-	if err != nil {
-		log.Fatal(err)
-	}
 }
