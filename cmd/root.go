@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/Manapia/ochibahiroi-cli/cmd/list"
 	"github.com/Manapia/ochibahiroi-cli/downloader"
+	"github.com/Manapia/ochibahiroi-cli/sanitizer"
 	"github.com/spf13/cobra"
 	"log"
 	"os"
@@ -70,6 +71,10 @@ func rootRun(_ *cobra.Command, _ []string) {
 	jobs, err := builder.Build()
 	if err != nil {
 		log.Fatalln(err)
+	}
+
+	for _, job := range jobs {
+		job.SavePath = sanitizer.SanitizeFilePath(job.SavePath)
 	}
 
 	if rootOptions.dryRun {

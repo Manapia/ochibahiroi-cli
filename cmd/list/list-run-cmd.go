@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/Manapia/ochibahiroi-cli/downloader"
 	"github.com/Manapia/ochibahiroi-cli/list"
+	"github.com/Manapia/ochibahiroi-cli/sanitizer"
 	"github.com/spf13/cobra"
 	"log"
 	"os"
@@ -65,7 +66,7 @@ func runCmdRun(_ *cobra.Command, args []string) {
 
 		newJob := &downloader.Job{
 			Url:      item.Input,
-			SavePath: item.Output,
+			SavePath: sanitizer.SanitizeFilePath(item.Output),
 		}
 		jobList = append(jobList, newJob)
 	}
