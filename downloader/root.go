@@ -41,15 +41,22 @@ func download(ch chan struct{}, wg *sync.WaitGroup, p *mpb.Progress, client *gra
 	response := client.Do(request)
 
 	before := response.BytesComplete()
+	total := response.Size
+	if response.Size == -1 {
+		total = 1
+	}
+
 	var bar *mpb.Bar
 	if option.ShowProgress {
 		bar = p.AddBar(
-			response.Size,
+			total,
 			mpb.PrependDecorators(
 				decor.Name(filepath.Base(request.Filename)),
 				// decor.DSyncWidth bit enables column width synchronization
 				decor.Percentage(decor.WCSyncSpace),
 			))
+
+		bar.SetTotal(total, false)
 	}
 
 	for {
@@ -59,6 +66,9 @@ func download(ch chan struct{}, wg *sync.WaitGroup, p *mpb.Progress, client *gra
 		}
 
 		if response.IsComplete() {
+			if bar != nil {
+				bar.IncrBy(int(response.BytesComplete() - before))
+			}
 			break
 		}
 		time.Sleep(300 * time.Millisecond)
