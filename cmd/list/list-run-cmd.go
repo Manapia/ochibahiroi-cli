@@ -83,7 +83,7 @@ func runCmdRun(_ *cobra.Command, args []string) {
 		outputPathStat, err := os.Stat(job.SavePath)
 		if err != nil {
 			if runCmdConfig.makeOutputDir {
-				if err := os.MkdirAll(job.SavePath, 0666); err != nil {
+				if err := os.MkdirAll(job.SavePath, 0755); err != nil {
 					log.Fatalln(err)
 				}
 			}

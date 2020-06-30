@@ -85,7 +85,7 @@ func rootRun(_ *cobra.Command, _ []string) {
 	outputPathStat, err := os.Stat(rootOptions.outputPath)
 	if err != nil {
 		if rootOptions.makeOutputDir {
-			if err := os.MkdirAll(rootOptions.outputPath, 0666); err != nil {
+			if err := os.MkdirAll(rootOptions.outputPath, 0755); err != nil {
 				log.Fatalln(err)
 			}
 		}
