@@ -80,10 +80,10 @@ func runCmdRun(_ *cobra.Command, args []string) {
 
 	// running phase
 	for _, job := range jobList {
-		outputPathStat, err := os.Stat(job.SavePath)
+		outputPathStat, err := os.Stat(filepath.Dir(job.SavePath))
 		if err != nil {
 			if runCmdConfig.makeOutputDir {
-				if err := os.MkdirAll(job.SavePath, 0755); err != nil {
+				if err := os.MkdirAll(filepath.Dir(job.SavePath), 0755); err != nil {
 					log.Fatalln(err)
 				}
 			}
