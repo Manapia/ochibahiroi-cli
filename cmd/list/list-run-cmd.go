@@ -45,10 +45,10 @@ func runCmdRun(_ *cobra.Command, args []string) {
 		FilePath: specifiedFilePath,
 	}
 	if !listFile.FileExists() {
-		log.Fatalln("The specified file could not be found.")
+		log.Fatalln("The specified download list file could not be found.")
 	}
 	if err := listFile.LoadFile(); err != nil {
-		log.Fatalf("Failed to load list file.\n%v", err)
+		log.Fatalf("Failed to load download list file.\n%v", err)
 	}
 	if errList := listFile.Validation(); len(errList) != 0 {
 		mes := fmt.Sprintf("%d issues found in download list.\n", len(errList))

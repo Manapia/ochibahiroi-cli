@@ -90,7 +90,7 @@ func rootRun(_ *cobra.Command, _ []string) {
 			}
 		}
 	} else if !outputPathStat.IsDir() {
-		log.Fatalf("output path %s is not directory", rootOptions.outputPath)
+		log.Fatalf("Output path %s is not directory.", rootOptions.outputPath)
 	}
 
 	option := downloader.DownloadOption{
