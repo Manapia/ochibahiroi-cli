@@ -3,7 +3,6 @@ package list
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -50,7 +49,7 @@ func (dld *DownloadListData) Validation() (errorList []error) {
 	for _, item := range dld.List {
 		_, idExists := idMap[item.ID]
 		if idExists {
-			errorList = append(errorList, errors.New("duplicate id: 4"))
+			errorList = append(errorList, fmt.Errorf("duplicate id: %d", item.ID))
 		} else {
 			idMap[item.ID] = false
 		}
